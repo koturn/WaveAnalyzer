@@ -17,6 +17,8 @@ $ make LTO=true OMP=true
 $ ./waveAnalyzer [解析対象wavファイル] [フーリエ変換のサイズ]  
 例：$ ./waveAnalyzer sound/piano_440hz.wav 4096
 
+![スクリーンショット](other/screenshot.png)  
+
 
 ## プログラムの実行に必要なこと
 gnuplotにパスが通っていること
