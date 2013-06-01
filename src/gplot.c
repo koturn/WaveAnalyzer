@@ -33,7 +33,7 @@
 int show_gplot(const POINT *restrict points, unsigned int N, RANGE range) {
   unsigned int i;
   FILE *gp;
-  if ((gp = popen("gnuplot -persist", "w")) == NULL) {
+  if ((gp = popen("gnuplot", "w")) == NULL) {
     return -1;
   }
 
@@ -49,6 +49,7 @@ int show_gplot(const POINT *restrict points, unsigned int N, RANGE range) {
 #ifdef IS_WINDOWS
   system("pause");
 #else
+  puts("Please input RETURN.");
   system("read");
 #endif
 
