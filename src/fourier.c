@@ -32,7 +32,7 @@ __DO__ {                         \
 } __WHILE_ZERO__
 
 #define CALLOC(type, n)  ((type *)calloc((n), sizeof(type)))
-#define FREE(ptr)        (free(ptr), (ptr) = NULL)
+#define FREE(ptr_p)      (free(*(ptr_p)), *(ptr_p) = NULL)
 #define SQ(x)            ((x) * (x))
 
 
@@ -235,7 +235,7 @@ void fft(double *restrict X_real, double *restrict X_imag, const double *restric
       SWAP(double, &X_imag[index[k]], &X_imag[k]);
     }
   }
-  FREE(index);
+  FREE(&index);
 }
 
 
@@ -437,7 +437,7 @@ void ifft(double *restrict x_real, double *restrict x_imag, const double *restri
     x_imag[k] /= N;
   }
 
-  FREE(index);
+  FREE(&index);
 }
 
 

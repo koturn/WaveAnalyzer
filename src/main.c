@@ -11,13 +11,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "compatibility.h"
+#include "fourier.h"
 #include "gplot.h"
 #include "wav.h"
-#include "fourier.h"
 
 
 #define CALLOC(type, n)  ((type *)calloc((n), sizeof(type)))
-#define FREE(ptr)        (free(ptr), (ptr) = NULL)
+#define FREE(ptr_p)      (free(*(ptr_p)), *(ptr_p) = NULL)
 #define SQ(x)            ((x) * (x))
 
 static unsigned int str2int(const char *restrict nstr);
@@ -75,9 +75,9 @@ int main(int argc, char *argv[]) {
     fputs("gnuplotにPATHが通っているか、確認してください\n", stderr);
   }
 
-  FREE(f_real);
-  FREE(f_imag);
-  FREE(points);
+  FREE(&f_real);
+  FREE(&f_imag);
+  FREE(&points);
   free_wave_data(wd);
   return EXIT_SUCCESS;
 }

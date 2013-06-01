@@ -18,7 +18,7 @@
 #include "wav.h"
 
 #define CALLOC(type, n)  ((type *)calloc((n), sizeof(type)))
-#define FREE(ptr)        (free(ptr), (ptr) = NULL)
+#define FREE(ptr_p)      (free(*(ptr_p)), *(ptr_p) = NULL)
 
 
 static void read_8bit_monoraul(WAVE_DATA *restrict wd, FILE *restrict fp);
@@ -37,7 +37,7 @@ __attribute__((const)) inline static double clipping(double s, double max, doubl
 
 
 static const double CLIPPING_MIN_8BIT  = 0.0;
-static const double CLIPPING_MAX_8BIT  = 256.0;
+static const double CLIPPING_MAX_8BIT  = 255.0;
 static const double CLIPPING_MIN_16BIT = 0.0;
 static const double CLIPPING_MAX_16BIT = 65535.0;
 
@@ -76,9 +76,9 @@ WAVE_DATA *read_wave_file(const char *restrict file_name) {
  * @param [in] wd  破棄する領域
  */
 void free_wave_data(WAVE_DATA *restrict wd) {
-  FREE(wd->s_data1);
-  FREE(wd->s_data2);
-  FREE(wd);
+  FREE(&wd->s_data1);
+  FREE(&wd->s_data2);
+  FREE(&wd);
 }
 
 
