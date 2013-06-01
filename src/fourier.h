@@ -2,7 +2,7 @@
  * @brief fourier.cのヘッダファイル
  *
  * @author  koturn 0;
- * @date    2013 05/30
+ * @date    2013 05/01
  * @file    fourier.h
  * @version 0.1
  */
@@ -18,6 +18,7 @@ void fft(double *restrict X_real, double *restrict X_imag, const double *restric
 void auto_ift(double *restrict x_real, double *restrict x_imag, const double *restrict X_real, const double *restrict X_imag, unsigned int N);
 void idft(double *restrict x_real, double *restrict x_imag, const double *restrict X_real, const double *restrict X_imag, unsigned int N);
 void ifft(double *restrict x_real, double *restrict x_imag, const double *restrict X_real, const double *restrict X_imag, unsigned int N);
+void calc_power_spectrum(double *restrict power, const double *restrict X_real, const double *restrict X_imag, unsigned int N);
 
 
 #endif

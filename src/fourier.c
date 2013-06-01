@@ -24,15 +24,16 @@
 #  define __WHILE_ZERO__  while (0)  //!< do ~ while (0) の while (0) (gcc以外で使用)
 #endif
 
-#define SWAP(type, a, b)                  \
-__DO__ {                                  \
-  register type __tmp_swap_var__ = *(a);  \
-  *(a) = *(b);                            \
-  *(b) = __tmp_swap_var__;                \
+#define SWAP(type, a, b)         \
+__DO__ {                         \
+  type __tmp_swap_var__ = *(a);  \
+  *(a) = *(b);                   \
+  *(b) = __tmp_swap_var__;       \
 } __WHILE_ZERO__
 
 #define CALLOC(type, n)  ((type *)calloc((n), sizeof(type)))
 #define FREE(ptr)        (free(ptr), (ptr) = NULL)
+#define SQ(x)            ((x) * (x))
 
 
 static void dft_ri(double *restrict X_real, double *restrict X_imag, const double *restrict x_real, const double *restrict x_imag, unsigned int N);
@@ -251,12 +252,10 @@ void fft(double *restrict X_real, double *restrict X_imag, const double *restric
  * @see idft
  */
 void auto_ift(double *restrict x_real, double *restrict x_imag, const double *restrict X_real, const double *restrict X_imag, unsigned int N) {
-  if (X_real != NULL && X_imag != NULL) {
-    idft_ri(x_real, x_imag, X_real, X_imag, N);
-  } else if (X_imag == NULL) {
-    idft_r(x_real, x_imag, X_real, N);
-  } else if (x_real == NULL) {
-    idft_i(x_real, x_imag, X_imag, N);
+  if (!(N & (N - 1))) {  // 2の累乗なら
+    ifft(x_real, x_imag, X_real, X_imag, N);
+  } else {
+    idft(x_real, x_imag, X_real, X_imag, N);
   }
 }
 
@@ -440,6 +439,22 @@ void ifft(double *restrict x_real, double *restrict x_imag, const double *restri
 
   FREE(index);
 }
+
+
+/*!
+ * @brief 周波数信号から、パワースペクトルを計算する
+ * @param [out] power   パワースペクトル(結果出力先)
+ * @param [in]  X_real  周波数信号の実部(入力)
+ * @param [in]  x_imag  周波数信号の虚部(入力)
+ */
+void calc_power_spectrum(double *restrict power, const double *restrict X_real, const double *restrict X_imag, unsigned int N) {
+  unsigned int i;
+  #pragma omp parallel for
+  for (i = 0; i < N; i++) {
+    power[i] = sqrt(SQ(X_real[i]) + SQ(X_imag[i]));
+  }
+}
+
 
 
 /*!
