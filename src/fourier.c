@@ -180,9 +180,9 @@ void fft(double *restrict X_real, double *restrict X_imag, const double *restric
   // Copy
   #pragma omp parallel sections
   {
-    #pragma omp parallel section
+    #pragma omp section
     dbl_array_copy(X_real, x_real, N);
-    #pragma omp parallel section
+    #pragma omp section
     dbl_array_copy(X_imag, x_imag, N);
   }
 
@@ -374,9 +374,9 @@ void ifft(double *restrict x_real, double *restrict x_imag, const double *restri
   // Copy
   #pragma omp parallel sections
   {
-    #pragma omp parallel section
+    #pragma omp section
     dbl_array_copy(x_real, X_real, N);
-    #pragma omp parallel section
+    #pragma omp section
     dbl_array_copy(x_imag, X_imag, N);
   }
 
