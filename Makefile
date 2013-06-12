@@ -2,6 +2,7 @@
 CC      = gcc
 CFLAGS  = -pipe -O3 -Wall -Wextra $(if $(STD), $(addprefix -std=, $(STD)),)
 LDFLAGS = -pipe -O3 -s
+LDLIBS  = -lm
 TARGET  = waveAnalyzer
 SRCDIR  = src
 OBJ1    = $(SRCDIR)/main.o
@@ -14,6 +15,8 @@ HEADER  = $(SRCDIR)/compatibility.h
 ifeq ($(OS),Windows_NT)
     TARGET := $(addsuffix .exe, $(TARGET))
     CFLAGS += -finput-charset=utf-8 -fexec-charset=cp932
+else
+    TARGET := $(addsuffix .out, $(TARGET))
 endif
 ifeq ($(LTO),true)
     CFLAGS  += -flto
@@ -26,7 +29,7 @@ else
     CFLAGS  += -Wno-unknown-pragmas
 endif
 
-%.exe :
+%.exe %.out :
 	$(CC) $(LDFLAGS) $(filter %.c %.o, $^) $(LDLIBS) -o $@
 
 

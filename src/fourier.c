@@ -59,7 +59,7 @@ __attribute__((const)) inline static unsigned int my_pow2(unsigned int n);
  * @see fft
  * @see dft
  */
-void auto_ft(double *restrict X_real, double *restrict X_imag, const double *restrict x_real, const double *restrict x_imag, unsigned int N) {
+void auto_dft(double *restrict X_real, double *restrict X_imag, const double *restrict x_real, const double *restrict x_imag, unsigned int N) {
   if (!(N & (N - 1))) {  // 2の累乗なら
     fft(X_real, X_imag, x_real, x_imag, N);
   } else {
@@ -78,7 +78,7 @@ void auto_ft(double *restrict X_real, double *restrict X_imag, const double *res
  * @param [in]  x_real  時間信号の実部(入力)
  * @param [in]  x_imag  時間信号の虚部(入力)
  * @param [in]  N       標本数
- * @see auto_ft
+ * @see auto_dft
  * @see dft_ri
  * @see dft_r
  * @see dft_i
@@ -194,13 +194,13 @@ void fft(double *restrict X_real, double *restrict X_imag, const double *restric
       unsigned int j;
       unsigned int p2 = my_pow2(number_of_stage - stage);
       for (j = 0; j < p2; j++) {
-        int n = my_pow2(number_of_stage - stage + 1) * i + j;
-        int m = my_pow2(number_of_stage - stage) + n;
-        int r = my_pow2(stage - 1) * j;
-        double a_real = X_real[n];
-        double a_imag = X_imag[n];
-        double b_real = X_real[m];
-        double b_imag = X_imag[m];
+        unsigned int      n = my_pow2(number_of_stage - stage + 1) * i + j;
+        unsigned int      m = my_pow2(number_of_stage - stage) + n;
+        unsigned int      r = my_pow2(stage - 1) * j;
+        double       a_real = X_real[n];
+        double       a_imag = X_imag[n];
+        double       b_real = X_real[m];
+        double       b_imag = X_imag[m];
         if (stage < number_of_stage) {
           double w_real = cos((2.0 * M_PI * r) / N);
           double w_imag = sin((2.0 * M_PI * r) / N);
@@ -251,7 +251,7 @@ void fft(double *restrict X_real, double *restrict X_imag, const double *restric
  * @see ifft
  * @see idft
  */
-void auto_ift(double *restrict x_real, double *restrict x_imag, const double *restrict X_real, const double *restrict X_imag, unsigned int N) {
+void auto_idft(double *restrict x_real, double *restrict x_imag, const double *restrict X_real, const double *restrict X_imag, unsigned int N) {
   if (!(N & (N - 1))) {  // 2の累乗なら
     ifft(x_real, x_imag, X_real, X_imag, N);
   } else {
@@ -271,7 +271,7 @@ void auto_ift(double *restrict x_real, double *restrict x_imag, const double *re
  * @param [in]  X_real  周波数信号の実部(入力)
  * @param [in]  X_imag  周波数信号の虚部(入力)
  * @param [in]  N       標本数
- * @see auto_ift
+ * @see auto_idft
  * @see idft_ri
  * @see idft_r
  * @see idft_i
@@ -388,13 +388,13 @@ void ifft(double *restrict x_real, double *restrict x_imag, const double *restri
       unsigned int j;
       unsigned int p2 = my_pow2(number_of_stage - stage);
       for (j = 0; j < p2; j++) {
-        int n = my_pow2(number_of_stage - stage + 1) * i + j;
-        int m = my_pow2(number_of_stage - stage) + n;
-        int r = my_pow2(stage - 1) * j;
-        double a_real = x_real[n];
-        double a_imag = x_imag[n];
-        double b_real = x_real[m];
-        double b_imag = x_imag[m];
+        unsigned int n      = my_pow2(number_of_stage - stage + 1) * i + j;
+        unsigned int m      = my_pow2(number_of_stage - stage) + n;
+        unsigned int r      = my_pow2(stage - 1) * j;
+        double       a_real = x_real[n];
+        double       a_imag = x_imag[n];
+        double       b_real = x_real[m];
+        double       b_imag = x_imag[m];
         if (stage < number_of_stage) {
           double w_real = cos((2.0 * M_PI * r) / N);
           double w_imag = sin((2.0 * M_PI * r) / N);

@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
     fputs("メモリ確保エラーです\n", stderr);
     return EXIT_FAILURE;
   }
-  auto_ft(f_real, f_imag, wd->s_data1, NULL, N);
+  auto_dft(f_real, f_imag, wd->s_data1, NULL, N);
 
   frq_rate = (double)wd->samples_per_sec / N;
   for (k = 0; k < N; k++) {
